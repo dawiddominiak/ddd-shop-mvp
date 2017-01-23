@@ -115,12 +115,17 @@ export class SequelizeProductRepository implements IProductRepository, ISequeliz
                 as: "demoFiles",
             }],
         }))
-            .map((productInstance: IProductInstance) => {
-                const tmp = new Product(productInstance.uuid, productInstance.name, productInstance.price);
-                _.merge(tmp, productInstance);
+            .map(this.mapProductInstanceToProduct)
+        ;
+    }
 
-                return tmp;
-            })
+    public getById(uuid: string): Promise<Product> {
+        return Promise.resolve(this.productModel.findOne({
+            where: {
+                uuid,
+            },
+        }))
+            .then(this.mapProductInstanceToProduct)
         ;
     }
 
@@ -134,5 +139,12 @@ export class SequelizeProductRepository implements IProductRepository, ISequeliz
 
     public getModel(): IProductModel {
         return this.productModel;
+    }
+
+    private mapProductInstanceToProduct(productInstance: IProductInstance) {
+        const tmp = new Product(productInstance.uuid, productInstance.name, productInstance.price);
+        _.merge(tmp, productInstance);
+
+        return tmp;
     }
 }

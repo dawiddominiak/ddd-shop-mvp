@@ -10,3 +10,19 @@ block content
           h3= product.getName()
           div Price: 
             span= product.getPrice()
+          // TODO: only if user is not an owner
+          section.pay
+            form(action='/products/' + product.getUuid() + '/buy', method='PATCH')
+              fieldset
+                legend Card data
+                input(type='text', name='creditCardNumber', placeholder='Card number')
+                select(name='expirationYear')
+                  each year in [2017, 2018, 2019, 2020, 2021]
+                    option= year
+                - var month = 1;
+                select(name='expirationMonth')
+                  while month <= 12
+                    option= month++
+                input(type='text', name='cvv', maxlength='3', placeholder='cvv')
+                input(type='text', name='owner', placeholder='owner')
+                input(type='submit', value='Pay')

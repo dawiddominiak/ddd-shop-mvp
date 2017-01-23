@@ -1,6 +1,7 @@
 import * as bcrypt from "bcryptjs";
 import * as Promise from "bluebird";
 import { inject, injectable } from "inversify";
+import * as UUID from "node-uuid";
 import * as Sequelize from "sequelize";
 import { IUserRepository } from "../domain/entity/IUserRepository";
 import { User } from "../domain/entity/User";
@@ -53,7 +54,7 @@ export class SequelizeUserRepository implements IUserRepository, ISequelizeRepos
         return this
             .hashPassword(password)
             .then((hash) => {
-                userPojo.password = password;
+                userPojo.password = hash;
 
                 return this.userModel.create(userPojo);
             })
@@ -66,10 +67,54 @@ export class SequelizeUserRepository implements IUserRepository, ISequelizeRepos
         return Promise.resolve(user);
     }
 
+    public getById(uuid: string): Promise<User> {
+        return Promise.resolve(
+            this.userModel.findOne({
+                where: {
+                    uuid,
+                },
+            },
+        ))
+            .then((user) => {
+                if (!user) {
+                    throw new Error ("User does not exist or password is incorrect."); // TODO: child domain error
+                }
+
+                return user.get({plain: true}) as any;
+            })
+            .then((userPlain) => {
+                return userPlain as User;
+            })
+        ;
+    }
+
     public login(email: string, password: string): Promise<User> {
         // TODO: change it
-        const user = new User("test", "test");
-        return Promise.resolve(user);
+        return this
+            .hashPassword(password)
+            .then((hash) => {
+                return this.userModel.findOne({
+                    where: {
+                        email,
+                        password: hash,
+                    },
+                });
+            })
+            .then((user) => {
+                if (!user) {
+                    throw new Error ("User does not exist or password is incorrect."); // TODO: child domain error
+                }
+
+                return user.get({plain: true}) as any;
+            })
+            .then((userPlain) => {
+                return userPlain as User;
+            })
+        ;
+    }
+
+    public getNextId() {
+        return UUID.v4();
     }
 
     private hashPassword(password: string): Promise<string> {

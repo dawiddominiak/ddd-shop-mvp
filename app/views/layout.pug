@@ -4,4 +4,17 @@ html
     meta(charset='utf-8')
     title= title
   body
-    block content
+    section.top
+      h1 Shop with videos
+      if user
+        p You're logged in as #{user.getEmail()}
+      else
+        ul
+          li
+            a(href='/login') Log in
+          li
+            a(href='/register') Register
+    section.content
+      block content
+    footer
+      p :)

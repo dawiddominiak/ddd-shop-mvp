@@ -1,4 +1,5 @@
 "use strict";
+import * as Promise from "bluebird";
 import * as bodyParser from "body-parser";
 import * as connectSessionSequelize from "connect-session-sequelize";
 import * as cookieParser from "cookie-parser";
@@ -11,6 +12,7 @@ import * as path from "path";
 import * as sequelize from "sequelize";
 import * as favicon from "serve-favicon";
 import { IUserRepository } from "./domain/entity/IUserRepository";
+import { User } from "./domain/entity/User";
 import { Persistance } from "./module/Persistance";
 import { shopContainer } from "./module/shopContainer";
 import { TYPES } from "./module/types";
@@ -37,7 +39,23 @@ app.use(session({
   }),
 }));
 
-passport.use(new LocalStrategy((email, password, done) => {
+passport.serializeUser((user: User, done) => {
+  Promise.resolve(user.getUuid()).asCallback(done);
+});
+
+passport.deserializeUser((id: string, done) => {
+  const userReposiotry = shopContainer.get<IUserRepository>(TYPES.IUserRepository);
+
+  userReposiotry
+    .getById(id)
+    .asCallback(done)
+  ;
+});
+
+passport.use(new LocalStrategy({
+  usernameField: "email",
+}, (email, password, done) => {
+  console.log("STRATEGY");
   const userReposiotry = shopContainer.get<IUserRepository>(TYPES.IUserRepository);
   userReposiotry
     .login(email, password)

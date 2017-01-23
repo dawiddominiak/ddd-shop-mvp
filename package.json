@@ -43,6 +43,8 @@
     "@types/passport-local": "^1.0.29",
     "@types/pg": "^6.1.34",
     "@types/sequelize": "^4.0.39",
-    "@types/serve-favicon": "^2.2.27"
+    "@types/serve-favicon": "^2.2.27",
+    "pug-lint": "^2.3.0",
+    "pug-lint-config-canner": "^1.0.0"
   }
 }

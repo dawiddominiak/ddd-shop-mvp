@@ -1,9 +1,9 @@
-import { User } from "../domain/entity/User";
 import * as Promise from "bluebird";
 import { inject, injectable } from "inversify";
 import * as Sequelize from "sequelize";
 import { IProductRepository } from "../domain/entity/IProductRepository";
 import { Product } from "../domain/entity/Product";
+import { User } from "../domain/entity/User";
 import { TYPES } from "../module/types";
 import { ISequelizeRepository } from "./ISequelizeRepository";
 import { IProductPojo } from "./pojo/IProductPojo";

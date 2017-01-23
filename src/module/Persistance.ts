@@ -1,4 +1,4 @@
-import { injectable, multiInject } from "inversify";
+import { inject, injectable, multiInject } from "inversify";
 import * as Sequelize from "sequelize";
 import { ISequelizeRepository } from "../persistance/ISequelizeRepository";
 import { TYPES } from "./types";
@@ -9,7 +9,7 @@ export class Persistance {
 
     constructor(
         @multiInject(TYPES.ISequelizeRepository) repositories: ISequelizeRepository[],
-        sequelize: Sequelize.Sequelize,
+        @inject(TYPES.Sequelize) sequelize: Sequelize.Sequelize,
     ) {
         this.sequelize = sequelize;
     }

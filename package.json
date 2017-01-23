@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "tsc && node app/bin/www.js --harmony"
+    "start": "tsc && node app/bin/www.js --harmony",
+    "debug": "tsc && node --debug=5858 --harmony app/bin/www.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.0",

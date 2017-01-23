@@ -26,7 +26,8 @@
 			"name": "Attach",
 			"type": "node",
 			"request": "attach",
-			"port": 5858
+			"port": 5858,
+			"sourceMaps": true			
 		}
 	]
 }

@@ -4,6 +4,7 @@ import { inject, injectable } from "inversify";
 import * as Sequelize from "sequelize";
 import { IUserRepository } from "../domain/entity/IUserRepository";
 import { User } from "../domain/entity/User";
+import { TYPES } from "../module/types";
 import { ISequelizeRepository } from "./ISequelizeRepository";
 import { IUserPojo } from "./pojo/IUserPojo";
 
@@ -16,10 +17,10 @@ export class SequelizeUserRepository implements IUserRepository, ISequelizeRepos
     private sequelize: Sequelize.Sequelize;
     private userModel: IUserModel;
 
-    constructor(sequelize: Sequelize.Sequelize) { // TODO: logger
+    constructor(@inject(TYPES.Sequelize) sequelize: Sequelize.Sequelize) { // TODO: logger
         this.sequelize = sequelize;
 
-        this.sequelize.define<IUserInstance, IUserPojo>("User", {
+        this.userModel = this.sequelize.define<IUserInstance, IUserPojo>("User", {
             uuid: {
                 allowNull: false,
                 primaryKey: true,

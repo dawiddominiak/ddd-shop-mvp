@@ -55,7 +55,6 @@ passport.deserializeUser((id: string, done) => {
 passport.use(new LocalStrategy({
   usernameField: "email",
 }, (email, password, done) => {
-  console.log("STRATEGY");
   const userReposiotry = shopContainer.get<IUserRepository>(TYPES.IUserRepository);
   userReposiotry
     .login(email, password)

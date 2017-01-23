@@ -1,6 +1,7 @@
 import * as bcrypt from "bcryptjs";
 import * as Promise from "bluebird";
 import { inject, injectable } from "inversify";
+import * as _ from "lodash";
 import * as UUID from "node-uuid";
 import * as Sequelize from "sequelize";
 import { IUserRepository } from "../domain/entity/IUserRepository";
@@ -83,7 +84,10 @@ export class SequelizeUserRepository implements IUserRepository, ISequelizeRepos
                 return user.get({plain: true}) as any;
             })
             .then((userPlain) => {
-                return userPlain as User;
+                const tmp = new User(userPlain.uuid, userPlain.email);
+                _.merge(tmp, userPlain);
+
+                return tmp;
             })
         ;
     }
@@ -96,19 +100,30 @@ export class SequelizeUserRepository implements IUserRepository, ISequelizeRepos
                 return this.userModel.findOne({
                     where: {
                         email,
-                        password: hash,
                     },
-                });
-            })
-            .then((user) => {
-                if (!user) {
-                    throw new Error ("User does not exist or password is incorrect."); // TODO: child domain error
-                }
+                })
+                .then((user) => {
+                    if (!user) {
+                        throw new Error ("User does not exist."); // TODO: child domain error
+                    }
 
-                return user.get({plain: true}) as any;
-            })
-            .then((userPlain) => {
-                return userPlain as User;
+                    const userPlain = user.get({plain: true}) as any;
+                    const compare = Promise.promisify(bcrypt.compare);
+
+                    return compare(password, hash)
+                        .tap ((result) => {
+                            if (!result) {
+                                throw new Error ("Wrong password."); // TODO: child domain error
+                            }
+                        })
+                        .then(() => {
+                            const tmp = new User(userPlain.uuid, userPlain.email);
+                            _.merge(tmp, userPlain);
+
+                            return tmp;
+                        })
+                    ;
+                });
             })
         ;
     }

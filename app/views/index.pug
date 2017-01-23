@@ -12,7 +12,7 @@ block content
             span= product.getPrice()
           // TODO: only if user is not an owner
           section.pay
-            form(action='/products/' + product.getUuid() + '/buy', method='PATCH')
+            form(action=`/products/${product.getUuid()}/buy`, method='POST')
               fieldset
                 legend Card data
                 input(type='text', name='creditCardNumber', placeholder='Card number')

@@ -5,6 +5,14 @@ import { ICartRepository } from "../domain/entity/ICartRepository";
 import { IProductRepository } from "../domain/entity/IProductRepository";
 import { ITransactionRepository } from "../domain/entity/ITransactionRepository";
 import { IUserRepository } from "../domain/entity/IUserRepository";
+import { IAfterTransactionTask } from "../domain/service/IAfterTransactionTask";
+import { IBeforeTransactionTask } from "../domain/service/IBeforeTransactionTask";
+import { IProcessTransactionStrategy } from "../domain/service/IProcessTransactionStrategy";
+import { ITransactionService } from "../domain/service/ITransactionService";
+import { InvoiceManager } from "../infrastructure/transaction/InvoiceManager";
+import { MockedProcessTransactionStrategy } from "../infrastructure/transaction/MockedProcessTransactionStrategy";
+import { TransactionLogicValidator } from "../infrastructure/transaction/TransactionLogicValidator";
+import { TransactionService } from "../infrastructure/transaction/TransactionService";
 import { ISequelizeRepository } from "../persistance/ISequelizeRepository";
 import { SequelizeCartRepository } from "../persistance/SequelizeCartRepository";
 import { SequelizeProductRepository } from "../persistance/SequelizeProductRepository";
@@ -35,5 +43,14 @@ shopContainer.bind<ISequelizeRepository>(TYPES.ISequelizeRepository).to(Sequeliz
 shopContainer.bind<Sequelize.Sequelize>(TYPES.Sequelize).toDynamicValue(() => {
     return sequelizeConfig;
 });
+
+shopContainer.bind<ITransactionService>(TYPES.ITransactionService).to(TransactionService);
+shopContainer.bind<IProcessTransactionStrategy>(TYPES.IProcessTransactionStrategy).to(MockedProcessTransactionStrategy);
+
+shopContainer.bind<IBeforeTransactionTask>(TYPES.IBeforeTransactionTask).to(TransactionLogicValidator);
+
+shopContainer.bind<IAfterTransactionTask>(TYPES.IAfterTransactionTask).to(InvoiceManager);
+
+
 
 export { shopContainer };

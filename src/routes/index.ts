@@ -1,4 +1,6 @@
 "use strict";
+import { CreditCard } from '../domain/valueObject/CreditCard';
+import { ITransactionService } from '../domain/service/ITransactionService';
 import * as express from "express";
 import * as passport from "passport";
 import { Cart } from "../domain/entity/Cart";
@@ -19,7 +21,6 @@ router.get("/", (req, res, next) => {
   productRepository
     .list()
     .tap((products) => {
-      console.log('user', req.user);
       res.render("index", {
         user: req.user,
         products,
@@ -61,15 +62,30 @@ router.post("/login", filterLoggedIn, passport.authenticate("local", {
   failureRedirect: "/login",
 }));
 
-router.patch("/products/:productId/buy", filterNotLoggedIn, (req, res, next) => {
+router.post("/products/:productId/buy", filterNotLoggedIn, (req, res, next) => {
   const productRepository = shopContainer.get<IProductRepository>(TYPES.IProductRepository);
   const cartRepository = shopContainer.get<ICartRepository>(TYPES.ICartRepository);
+  const transactionService = shopContainer.get<ITransactionService>(TYPES.ITransactionService);
+  const creditCard = new CreditCard(
+    req.body.creditCardNumber,
+    req.body.expirationMonth,
+    req.body.expirationYear,
+    req.body.cvv,
+    req.body.owner,
+  );
 
   productRepository
     .getById(req.param("productId"))
-    .tap((product: Product) => {
+    .then((product: Product) => {
       const cart = new Cart(cartRepository.getNextId(), req.user);
       cart.addProduct(product);
+
+      return transactionService.process(req.user, cart, creditCard);
+    })
+    .tap((transaction) => {
+      res.render("summary", {
+        cart: transaction.getCart(),
+      });
     })
     .catch(next)
     .done()
@@ -80,7 +96,7 @@ function filterNotLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     next();
   } else {
-    res.redirect();
+    res.redirect("/");
   }
 }
 

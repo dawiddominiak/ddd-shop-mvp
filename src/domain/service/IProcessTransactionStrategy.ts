@@ -4,6 +4,6 @@ import { Transaction } from "../entity/Transaction";
 import { User } from "../entity/User";
 import { CreditCard } from "../valueObject/CreditCard";
 
-export interface ITransactionService {
+export interface IProcessTransactionStrategy {
     process(user: User, cart: Cart, creditCard: CreditCard): Promise<Transaction>;
 }

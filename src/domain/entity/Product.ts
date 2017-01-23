@@ -24,6 +24,10 @@ export class Product {
         return this.price;
     }
 
+    public getName() {
+        return this.name;
+    }
+
     public getFilesAvailableAfterPurchase() {
         return this.filesAvailableAfterPurchase;
     }
@@ -36,7 +40,21 @@ export class Product {
         return this.demoFiles;
     }
 
+    public isOnList(products: Product[]) {
+        for (const product of products) {
+            if (product.sameIdentityAs(this)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public addDemoFile(file: File) {
         this.demoFiles.push(file);
+    }
+
+    public sameIdentityAs(other: Product) {
+        return this.uuid === other.uuid;
     }
 }

@@ -2,3 +2,11 @@ extends layout.pug
 
 block content
   p Welcome to our shop
+  section.products
+    h2 Our products
+    ul
+      each product in products
+        li
+          h3= product.getName()
+          div Price: 
+            span= product.getPrice()

@@ -3,7 +3,7 @@
   "version": "0.1.0",
    "private": true,
   "scripts": {
-    "start": "node app/bin/www.js"
+    "start": "tsc && node app/bin/www.js --harmony"
   },
   "dependencies": {
     "body-parser": "^1.14.2",

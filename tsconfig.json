@@ -7,7 +7,7 @@
     "outDir": "app",
     "rootDir": "src"
   },
-  "exclude":[
+  "exclude": [
     "node_modules"
   ]
 }

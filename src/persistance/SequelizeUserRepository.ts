@@ -60,14 +60,16 @@ export class SequelizeUserRepository implements IUserRepository, ISequelizeRepos
         ;
     }
 
-    public getById(uuid: string): Promise<User> {
+    public getByEmail(email: string): Promise<User> {
         // TODO: change it
         const user = new User("test", "test");
         return Promise.resolve(user);
     }
 
-    public checkPassword(user: User, password: string) {
-    
+    public login(email: string, password: string): Promise<User> {
+        // TODO: change it
+        const user = new User("test", "test");
+        return Promise.resolve(user);
     }
 
     private hashPassword(password: string): Promise<string> {

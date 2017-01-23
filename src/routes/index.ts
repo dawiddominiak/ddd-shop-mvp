@@ -12,7 +12,7 @@ const router = express.Router();
 router.get("/", (req, res, next) => {
   const userRepository = shopContainer.get<IUserRepository>(TYPES.IUserRepository);
   userRepository
-    .getById("123")
+    .getByEmail("123")
     .then((user) => {
       res.render("index", { title: user.getUuid() });
     })

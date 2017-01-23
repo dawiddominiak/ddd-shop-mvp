@@ -1,17 +1,24 @@
 "use strict";
-import { Persistance } from "./module/Persistance";
-import { TYPES } from "./module/types";
-
 import * as bodyParser from "body-parser";
+import * as connectSessionSequelize from "connect-session-sequelize";
 import * as cookieParser from "cookie-parser";
 import * as express from "express";
+import * as session from "express-session";
 import * as logger from "morgan";
+import * as passport from "passport";
+import * as passportLocal from "passport-local";
 import * as path from "path";
+import * as sequelize from "sequelize";
 import * as favicon from "serve-favicon";
+import { IUserRepository } from "./domain/entity/IUserRepository";
+import { Persistance } from "./module/Persistance";
 import { shopContainer } from "./module/shopContainer";
+import { TYPES } from "./module/types";
 import index from "./routes/index";
 
 const app: express.Express = express();
+const SequelizeStore = connectSessionSequelize(session.Store);
+const LocalStrategy = passportLocal.Strategy;
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -23,6 +30,24 @@ app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+  secret: process.env.APPLICATION_SECRET || "default secret",
+  store: new SequelizeStore({
+    db: shopContainer.get<sequelize.Sequelize>(TYPES.Sequelize),
+  }),
+}));
+
+passport.use(new LocalStrategy((email, password, done) => {
+  const userReposiotry = shopContainer.get<IUserRepository>(TYPES.IUserRepository);
+  userReposiotry
+    .login(email, password)
+    .asCallback(done)
+  ;
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", index);

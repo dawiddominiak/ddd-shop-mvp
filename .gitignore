@@ -3,6 +3,7 @@ typings/*
 npm-debug.log
 .settings/*
 .git/*
+.vscode/*
 bower_components/*
 app/*
 !app/public/*

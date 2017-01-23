@@ -1,15 +1,17 @@
 import * as Promise from "bluebird";
+import { inject, injectable } from "inversify";
 import * as Sequelize from "sequelize";
 import { IUserRepository } from "../domain/entity/IUserRepository";
 import { User } from "../domain/entity/User";
 import { ISequelizeRepository } from "./ISequelizeRepository";
 
+@injectable()
 export class SequelizeUserRepository implements IUserRepository {
-    private sequelize: Sequelize.Sequelize;
+    // private sequelize: Sequelize.Sequelize;
 
-    constructor(sequelize: Sequelize.Sequelize) { // TODO: logger
-        this.sequelize = sequelize;
-    }
+    // constructor(sequelize: Sequelize.Sequelize) { // TODO: logger
+    //     this.sequelize = sequelize;
+    // }
 
     public add(user: User) {
 

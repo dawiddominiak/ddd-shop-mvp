@@ -5,6 +5,7 @@
     "removeComments": true,
     "sourceMap": true,
     "outDir": "app",
+    "experimentalDecorators": true,
     "rootDir": "src"
   },
   "exclude": [

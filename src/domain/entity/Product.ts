@@ -1,4 +1,4 @@
-import { File } from "./File";
+import { File } from "../valueObject/File";
 
 export class Product {
     private uuid: string;

@@ -3,9 +3,11 @@ import { Product } from "./Product";
 
 export class Cart {
     private products: Product[];
+    private uuid: string;
 
-    constructor() {
+    constructor(uuid: string) {
         this.products = [];
+        this.uuid = uuid;
     }
 
     public getProducts() {

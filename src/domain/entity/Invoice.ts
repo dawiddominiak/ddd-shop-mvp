@@ -1,7 +1,9 @@
 export class Invoice {
-    private id: string;
+    private uuid: string;
+    private externalId: string;
 
-    constructor(id: string) {
-        this.id = id;
+    constructor(uuid: string, externalId: string) {
+        this.uuid = uuid;
+        this.externalId = externalId;
     }
 }

@@ -44,8 +44,10 @@ router.post("/register", filterLoggedIn, (req, res, next) => {
     .add(user, req.body.password)
     .then(() => {
       res.redirect("/login");
+
+      return null;
     })
-    .catch((error) => {
+    .catch((error) => { // TODO: error inheritance, catching only one type of errors
       res.render("register");
     })
     .done()
@@ -85,6 +87,7 @@ router.post("/products/:productId/buy", filterNotLoggedIn, (req, res, next) => {
     .tap((transaction) => {
       res.render("summary", {
         cart: transaction.getCart(),
+        user: req.user,
       });
     })
     .catch(next)

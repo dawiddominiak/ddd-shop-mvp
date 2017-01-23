@@ -18,6 +18,9 @@ import { Persistance } from "./module/Persistance";
 import { shopContainer } from "./module/shopContainer";
 import { TYPES } from "./module/types";
 import index from "./routes/index";
+// TODO: helmet https://www.npmjs.com/package/helmet
+// TODO: csurf https://www.npmjs.com/package/csurf
+// TODO: express-limiter or other tool https://www.npmjs.com/package/express-limiter
 
 const app: express.Express = express();
 const SequelizeStore = connectSessionSequelize(session.Store);
@@ -35,6 +38,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 // TODO: CSRF protection
 app.use(session({
+  name: "session",
   secret: process.env.APPLICATION_SECRET || "default secret",
   store: new SequelizeStore({
     db: shopContainer.get<sequelize.Sequelize>(TYPES.Sequelize),

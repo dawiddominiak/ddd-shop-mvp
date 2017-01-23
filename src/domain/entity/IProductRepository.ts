@@ -6,4 +6,5 @@ export interface IProductRepository {
     add(product: Product);
     list(): Promise<Product[]>;
     listOwnedBy(user: User): Promise<Product[]>;
+    getNextId(): string;
 }

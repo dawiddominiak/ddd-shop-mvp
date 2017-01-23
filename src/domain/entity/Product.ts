@@ -28,7 +28,15 @@ export class Product {
         return this.filesAvailableAfterPurchase;
     }
 
+    public addFileAvailableAfterPurchase(file: File) {
+        this.filesAvailableAfterPurchase.push(file);
+    }
+
     public getDemoFiles() {
         return this.demoFiles;
+    }
+
+    public addDemoFile(file: File) {
+        this.demoFiles.push(file);
     }
 }

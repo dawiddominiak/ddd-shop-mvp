@@ -15,7 +15,7 @@ export class Persistance {
     }
 
     public sync(force?: boolean, logger?: Function) {
-        this.sequelize.sync({
+        return this.sequelize.sync({
             force: force as boolean,
             logging: logger || false,
         });

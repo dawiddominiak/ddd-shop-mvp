@@ -13,6 +13,7 @@ import * as sequelize from "sequelize";
 import * as favicon from "serve-favicon";
 import { IUserRepository } from "./domain/entity/IUserRepository";
 import { User } from "./domain/entity/User";
+import { fixtures } from "./fixtures/fixtures";
 import { Persistance } from "./module/Persistance";
 import { shopContainer } from "./module/shopContainer";
 import { TYPES } from "./module/types";
@@ -32,6 +33,7 @@ app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+// TODO: CSRF protection
 app.use(session({
   secret: process.env.APPLICATION_SECRET || "default secret",
   store: new SequelizeStore({
@@ -94,7 +96,11 @@ if (process.env.NODE_ENV === "development") {
 
   // create database schema
   const persistance = shopContainer.get<Persistance>(TYPES.Persistance);
-  persistance.sync(true, console.log);
+  persistance
+    .sync(true, console.log)
+    .then(fixtures)
+    .done()
+  ;
 }
 
 // production error handler

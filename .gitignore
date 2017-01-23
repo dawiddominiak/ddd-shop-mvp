@@ -8,3 +8,4 @@ bower_components/*
 app/*
 !app/public/*
 !app/views/*
+!app/files/*

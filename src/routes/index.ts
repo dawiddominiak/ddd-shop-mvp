@@ -1,6 +1,7 @@
 "use strict";
 import * as express from "express";
 import * as passport from "passport";
+import { IProductRepository } from "../domain/entity/IProductRepository";
 import { IUserRepository } from "../domain/entity/IUserRepository";
 import { User } from "../domain/entity/User";
 import { TYPES } from "../module/types";
@@ -11,8 +12,19 @@ const router = express.Router();
 /* GET home page. */
 router.get("/", (req, res, next) => {
   const userRepository = shopContainer.get<IUserRepository>(TYPES.IUserRepository);
+  const productRepository = shopContainer.get<IProductRepository>(TYPES.IProductRepository);
 
-  res.render("index", { user: req.user });
+  productRepository
+    .list()
+    .tap((products) => {
+      res.render("index", {
+        user: req.user,
+        products,
+      });
+    })
+    .catch(next)
+    .done()
+  ;
 });
 
 router.get("/register", filterLoggedIn, (req, res, next) => {

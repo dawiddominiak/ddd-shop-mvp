@@ -30,7 +30,7 @@ shopContainer
 shopContainer.bind<ISequelizeRepository>(TYPES.ISequelizeRepository).to(SequelizeUserRepository);
 shopContainer.bind<ISequelizeRepository>(TYPES.ISequelizeRepository).to(SequelizeProductRepository);
 shopContainer.bind<ISequelizeRepository>(TYPES.ISequelizeRepository).to(SequelizeCartRepository);
-shopContainer.bind<ISequelizeRepository>(TYPES.ITransactionRepository).to(SequelizeTransactionRepository);
+shopContainer.bind<ISequelizeRepository>(TYPES.ISequelizeRepository).to(SequelizeTransactionRepository);
 
 shopContainer.bind<Sequelize.Sequelize>(TYPES.Sequelize).toDynamicValue(() => {
     return sequelizeConfig;

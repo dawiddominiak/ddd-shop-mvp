@@ -15,6 +15,7 @@ export interface ITransactionInstance extends Sequelize.Instance<ITransactionPoj
 
 export interface ITransactionModel extends Sequelize.Model<ITransactionInstance, ITransactionPojo> { }
 
+@injectable()
 export class SequelizeTransactionRepository implements ITransactionRepository, ISequelizeRepository {
     private transactionModel: ITransactionModel;
     private cartModel: ICartModel;

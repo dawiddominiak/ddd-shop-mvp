@@ -56,9 +56,6 @@ export class SequelizeCartRepository implements ICartRepository, ISequelizeRepos
         this.userModel.hasMany(this.cartModel, {
             as: "carts",
         });
-        this.cartModel.belongsTo(this.userModel, {
-            as: "user",
-        });
     }
 
     public save(cart: Cart): Promise<any> {

@@ -132,6 +132,10 @@ export class SequelizeUserRepository implements IUserRepository, ISequelizeRepos
         return UUID.v4();
     }
 
+    public getModel() {
+        return this.userModel;
+    }
+
     private hashPassword(password: string): Promise<string> {
         const hash = Promise.promisify(bcrypt.hash);
 

@@ -22,8 +22,8 @@ export interface IFileModel extends Sequelize.Model<IFileInstance, IFilePojo> { 
 
 @injectable()
 export class SequelizeProductRepository implements IProductRepository, ISequelizeRepository {
-    private sequelize: Sequelize.Sequelize;
     private productModel: IProductModel;
+    private sequelize: Sequelize.Sequelize;
     private fileModel: IFileModel;
 
     constructor(@inject(TYPES.Sequelize) sequelize: Sequelize.Sequelize) {
@@ -130,5 +130,9 @@ export class SequelizeProductRepository implements IProductRepository, ISequeliz
 
     public getNextId(): string {
         return UUID.v4();
+    }
+
+    public getModel(): IProductModel {
+        return this.productModel;
     }
 }

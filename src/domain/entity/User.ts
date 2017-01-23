@@ -1,13 +1,17 @@
 export class User {
     private uuid: string;
-    private nick: string;
+    private email: string;
 
-    constructor(uuid: string, nick: string) {
+    constructor(uuid: string, email: string) {
         this.uuid = uuid;
-        this.nick = nick;
+        this.email = email;
     }
 
     public getUuid(): string {
         return this.uuid;
+    }
+
+    public getEmail(): string {
+        return this.email;
     }
 }

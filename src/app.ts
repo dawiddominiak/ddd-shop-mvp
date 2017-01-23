@@ -1,4 +1,6 @@
 "use strict";
+import { Persistance } from "./module/Persistance";
+import { TYPES } from "./module/types";
 
 import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
@@ -6,6 +8,7 @@ import * as express from "express";
 import * as logger from "morgan";
 import * as path from "path";
 import * as favicon from "serve-favicon";
+import { shopContainer } from "./module/shopContainer";
 import index from "./routes/index";
 
 const app: express.Express = express();
@@ -46,6 +49,10 @@ if (process.env.NODE_ENV === "development") {
       title: "error",
     });
   });
+
+  // create database schema
+  const persistance = shopContainer.get<Persistance>(TYPES.Persistance);
+  persistance.sync(true, console.log);
 }
 
 // production error handler

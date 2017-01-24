@@ -1,0 +1,10 @@
+extends layout.pug
+
+block content
+  ul
+    each product in cart.getProducts()
+      li
+        span= product.getName()
+        span= product.getPrice()
+      p.summary= cart.getTotalPrice()
+    

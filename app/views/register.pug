@@ -1,0 +1,10 @@
+extends layout.pug
+
+block content
+  p register
+  form(action='/register', method='POST')
+    fieldset
+      legend Registration form
+      input(type='email', name='email', placeholder='email')
+      input(type='password', name='password', placeholder='password')
+      input(type='submit', value='register')
